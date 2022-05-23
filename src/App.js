@@ -1,19 +1,41 @@
 
 import './App.css';
-import Greet from './Component/PropsFunc';
-import Welcome from './Component/propsclass';
-import { Message } from './Component/stateclass';
-import Form from './Forms';
+import React from 'react';
+import { useReducer } from 'react';
+import DataFecth from './Component/DataFetch';
+import  CompA  from './Component/ReducerandContext/CompA';
+import CompB from './Component/ReducerandContext/CompB';
 
-
+  export const Component=React.createContext()
+const initialState=0
+const reducer=(state,action)=>{
+  switch(action){
+    case 'increment':
+      return state + 1
+    case 'decrement':
+      return state - 1
+    case 'reset':
+      return initialState
+    default:
+      return state
+  }
+}
 function App() {
+
+  const [ count, dispatch ] = useReducer(reducer,initialState)
   return (
-    <div className="App">
-      <Greet name='john smith' funname='smith' />
-      <Welcome name='diya' />
-      <Message />
-      <Form/>
-    </div>
+    <Component.Provider 
+      value={{ countState:count , countDispatch:dispatch }}>
+        <div>
+          
+      Count = { count }
+      <CompA />
+      <CompB />
+      
+      <DataFecth/>
+      </div>
+    </Component.Provider>
+   
   );
 }
 
